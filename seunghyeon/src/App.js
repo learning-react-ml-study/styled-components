@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import styled, {injectGlobal, css} from "styled-components";
+import styled, {injectGlobal, ThemeProvider } from "styled-components";
+import theme from './theme';
 
 injectGlobal`
   body{
@@ -8,13 +9,6 @@ injectGlobal`
   } 
 `;
 
-// --- mixin
-const awesomeCard = css`
-  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0,0,0,0.08)l
-  background-color: white;
-  border-radius: 10px;
-  padding: 20px;
-`;
 
 const Container = styled.div`
   height: 100vh;
@@ -22,24 +16,32 @@ const Container = styled.div`
   background-color:pink;
 `;
 
-const Input = styled.input.attrs({
-  //주고 싶은 attr들을 object로 전달
-  required: true
-})`
-  border: none; 
-  border-radius 5px;
-  ${awesomeCard};
-  
+const Card = styled.div`
+  background-color: red;
+`;
+
+const Button = styled.button`
+  border-radius: 30px;
+  padding: 25px 15px;
+  background-color: ${props => props.theme.successColor}
 `;
 
 class App extends Component {
   render() {
     return (
-      <Container>
-        <Input placeholder="hello" />
-      </Container>
+      <ThemeProvider theme={theme}>
+        <Container>
+          <Form />
+        </Container>
+      </ThemeProvider>
     );
   }
 }
+
+const Form = () => (
+<Card>
+  <Button>Hello</Button>
+  </Card>
+);
 
 export default App;

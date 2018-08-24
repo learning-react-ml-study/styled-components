@@ -152,3 +152,52 @@ class App extends Component {
             /* ${} 형태로 삽입*/
             ```
         TIP) file로 share하여 css 통일해줄 수도 있음
+
+# 6 Theming
+1. 독립된 파일 생성 (ex. theme.js)
+    ```javascript
+    const theme = {
+    mainColor: "#9b59b6",
+    dangerColor: "#c0392b",
+    successColor: "#2ecc71"
+    }
+
+    export default theme;
+    ```
+
+2.  import {ThemeProvider} from "styled-components";
+    import theme from './theme.js'; // theme 파일
+
+3. 
+theme을 props로 가져옴
+```javascript
+class App extends Component {
+  render() {
+    return (
+      <ThemeProvider theme={theme}>
+        <Container>
+          <Form />
+        </Container>
+      </ThemeProvider>
+    );
+  }
+}
+
+const Form = () => (
+<Card>
+  <Button>Hello</Button>
+  </Card>
+);
+```
+```javascript
+const Button = styled.button`
+  border-radius: 30px;
+  padding: 25px 15px;
+  background-color: ${props => props.theme.successColor}
+`;
+// background-color가 theme 내 색상으로 바로 설정됨!
+```
+-> props로 받아오는 theme만 바꿔주면 바로 전체에 적용됨
+
+
+
