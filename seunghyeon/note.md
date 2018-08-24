@@ -93,7 +93,7 @@ const Button = styled.button`
   background-color: ${props => props.danger ? "#c0392b" : "#2ecc71"};
   ${props => {
     if(props.danger){
-      return `animation: ${rotation} ${rotationTime}}s linear infinite`
+      return `animation: ${rotation} ${props.rotationTime}}s linear infinite`
     }
   }}
 `;
@@ -111,4 +111,44 @@ class App extends Component {
 }
 ```
 
--> css를 함수, 컴포넌트화 시킬 수 있고 props를 가질 수 있음! 
+-> css를 함수, 컴포넌트화 시킬 수 있고 props를 가질 수 있으며 props로 스타일 변경 가능 (즉 컴포넌트에서 바로 값을 변경할 수도 있음)
+
+# 5 Extra Attributes and Mixins
+- custom attribute
+    ```javascript
+    const Input = styled.input.attrs({
+    /*주고 싶은 attr들을 object로 전달*/
+    required: true
+    })`
+    border-radius: 5px;
+    `;  
+
+    ```
+
+
+- Mixin 
+    - 그룹화한 CSS -> 재사용 가능한 방법
+        1. 다른 컴포넌트 쓰고 -> 확장 (#3 extension 참고)
+        2. Mixin : header, footer, card 콤비네이션, 폰트 콤비네이션 등 여러가지 상황에 유용!
+            1. import {css} from 'styled-components'
+            2. 
+            ```javascript
+            /*--- mixin */
+            const awesomeCard = css`
+            box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0,0,0,0.08)l
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            `;
+            ```
+            3. 주고 싶은 엘리먼트에 입력
+            ```javascript
+            const Input = styled.input.attrs({
+            required: true
+            })`
+            border-radius: 5px;
+            ${awesomeCard}; 
+            `;
+            /* ${} 형태로 삽입*/
+            ```
+        TIP) file로 share하여 css 통일해줄 수도 있음

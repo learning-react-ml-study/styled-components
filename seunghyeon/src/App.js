@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styled, {injectGlobal, keyframes} from "styled-components";
+import styled, {injectGlobal, css} from "styled-components";
 
 injectGlobal`
   body{
@@ -8,63 +8,38 @@ injectGlobal`
   } 
 `;
 
-class App extends Component {
-  render() {
-    return (
-      <Container>
-        <Button default>Hello</Button>
-        <Button danger rotationTime={5}>Danger!</Button>
-        <Anchor href="https://www.google.com">Go to Google</Anchor>
-      </Container>
-    );
-  }
-}
-
-// --- 1. 기존의 방식
-// const Button = ({danger}) => (
-//   <button 
-//   className={danger ? "button button--danger" : "button button--success"}>Hello</button>
-// );
-
-// --- 2. styled components
-const Button = styled.button`
-  border-radius: 50px;
-  padding: 5px;
-  min-width: 120px;
-  color: white;
-  font-weight: 600;
-  -webkit-appearance: none;
-  cursor: pointer;
-  &:active,
-  &:focus {
-    outline: none;
-  }
-  background-color: ${props => props.danger ? "#c0392b" : "#2ecc71"};
-  ${props => {
-    if(props.danger){
-      return `animation: ${rotation} ${props.rotationTime}s linear infinite`
-    }
-  }}
+// --- mixin
+const awesomeCard = css`
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0,0,0,0.08)l
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
 `;
 
 const Container = styled.div`
   height: 100vh;
   width: 100%;
   background-color:pink;
-`
-
-// --- extension
-const Anchor = Button.withComponent("a").extend`
-  text-decoration: none;
 `;
 
-const rotation = keyframes`
-  from{
-    transform: rotate(0deg);
-  }
-  to{
-    transform: rotate(360deg);
-  }
+const Input = styled.input.attrs({
+  //주고 싶은 attr들을 object로 전달
+  required: true
+})`
+  border: none; 
+  border-radius 5px;
+  ${awesomeCard};
+  
 `;
+
+class App extends Component {
+  render() {
+    return (
+      <Container>
+        <Input placeholder="hello" />
+      </Container>
+    );
+  }
+}
 
 export default App;
