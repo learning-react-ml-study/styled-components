@@ -1,12 +1,12 @@
 # 1 셋업 : button challenge
--> create button with hover, active state, background color
+-> 목표 : create button with hover, active state, background color
 
 - className은 별로다. (global하니까, 모듈을 사용할 때 등등)
 
 # 2 Hello World with Styled Components
 - react는 css가 내부에 있는 컴포넌트를 줄 것이다
 
-const [컴포넌트명] = styeld.[스타일을 주려는 HTML 요소]`CSS`
+const [컴포넌트명] = styled.[스타일을 주려는 HTML 요소]`CSS`
 
 예시
 ```javascript
@@ -46,7 +46,7 @@ injectGlobal`
 `;
 ```
 
-- Extension: 내 컴포넌트를 재활용하는 방법
+- Extension: 내 컴포넌트를 재활용할 수 있음
 
 ```javascript
 const Anchor = Button.withComponent("a").extend`text-decoration: none;`;
@@ -111,10 +111,11 @@ class App extends Component {
 }
 ```
 
--> css를 함수, 컴포넌트화 시킬 수 있고 props를 가질 수 있으며 props로 스타일 변경 가능 (즉 컴포넌트에서 바로 값을 변경할 수도 있음)
+-> css를 함수, 컴포넌트화 시킬 수 있고 props를 가질 수 있으며 props로 스타일 변경 가능 (즉 컴포넌트에서 바로 값을 변경할 수 있음)
 
 # 5 Extra Attributes and Mixins
-- custom attribute
+
+1. custom attribute
     ```javascript
     const Input = styled.input.attrs({
     /*주고 싶은 attr들을 object로 전달*/
@@ -126,8 +127,8 @@ class App extends Component {
     ```
 
 
-- Mixin 
-    - 그룹화한 CSS -> 재사용 가능한 방법
+2. Mixin : 그룹화한 CSS
+    - Q. CSS를 재사용할 수 있는 방법?
         1. 다른 컴포넌트 쓰고 -> 확장 (#3 extension 참고)
         2. Mixin : header, footer, card 콤비네이션, 폰트 콤비네이션 등 여러가지 상황에 유용!
             1. import {css} from 'styled-components'
@@ -151,7 +152,7 @@ class App extends Component {
             `;
             /* ${} 형태로 삽입*/
             ```
-        TIP) file로 share하여 css 통일해줄 수도 있음
+        TIP) file로 share하여 css 통일해줄 수 있음
 
 # 6 Theming
 1. 독립된 파일 생성 (ex. theme.js)
@@ -168,36 +169,82 @@ class App extends Component {
 2.  import {ThemeProvider} from "styled-components";
     import theme from './theme.js'; // theme 파일
 
-3. 
-theme을 props로 가져옴
-```javascript
-class App extends Component {
-  render() {
-    return (
-      <ThemeProvider theme={theme}>
-        <Container>
-          <Form />
-        </Container>
-      </ThemeProvider>
+3. theme을 props로 가져옴
+    ```javascript
+    class App extends Component {
+    render() {
+        return (
+        <ThemeProvider theme={theme}>
+            <Container>
+            <Form />
+            </Container>
+        </ThemeProvider>
+        );
+    }
+    }
+
+    const Form = () => (
+    <Card>
+    <Button>Hello</Button>
+    </Card>
     );
-  }
-}
+    ```
+    ```javascript
+    const Button = styled.button`
+    border-radius: 30px;
+    padding: 25px 15px;
+    background-color: ${props => props.theme.successColor}
+    `;
+    // background-color가 theme 내 색상으로 바로 설정됨!
+    ```
+    -> props로 받아오는 theme만 바꿔주면 바로 전체에 적용됨 (내부의 모든 레벨이 전부 적용됨)★
 
-const Form = () => (
-<Card>
-  <Button>Hello</Button>
-  </Card>
-);
-```
+
+# 7 nesting
 ```javascript
-const Button = styled.button`
-  border-radius: 30px;
-  padding: 25px 15px;
-  background-color: ${props => props.theme.successColor}
+const Container = styled.div`
+  height: 100vh;
+  width: 100%;
+  background-color:pink;
+  ${card}:first-child{
+    background-color:blue;
+  }
 `;
-// background-color가 theme 내 색상으로 바로 설정됨!
+// nesting, sass와 같이 nesting하되 실제 컴포넌트 참조
 ```
--> props로 받아오는 theme만 바꿔주면 바로 전체에 적용됨
 
+# 8 CSS on React Native
 
+1. 기본적인 css 문법 사용 (stylesheet 문법 말고)
+```javascript
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
+import styled from "styled-components";
 
+//react native에서는 html tag가 아니라 react native의 element로 지정한다
+const Container = styled.View`
+    flex: 1;
+    justify-content: center;
+    align-itmes: center;
+    padding: 10px 100px;
+`;
+
+const Title = styled.Text`
+    font-weight: 600;
+    font-size: 32px;
+`;
+
+export default class app extends React.Components{
+    render(){
+        return (
+            <Container>
+                <Title>Open up App.js to start working on your app!</Title>
+            </Container>
+        )
+    }
+}
+```
+
+2. [React Native Web](https://github.com/necolas/react-native-web)을 사용해서 *native의 요소 -> html tag 전환 가능!*
+
+3. [쿨한 컴포넌트 예시](https://github.com/nomadcoders/styled-awesomeness/blob/fdb5d0d7ca29ab83dc4519c03ed76ab37a9d5c34/extras.md)
