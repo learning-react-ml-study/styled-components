@@ -70,7 +70,7 @@ injectGlobal`
 
 ## Extending Styles 
 
-####  extend · withComponent() · styled() 
+####  extend · withComponent()
 
 ```
 const Button = styled.button`
